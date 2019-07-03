@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "rmorskate\\QueryBuilder\\": "src"
+            "Yource\\QueryBuilder\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "rmorskate\\QueryBuilder\\Tests\\": "tests"
+            "Yource\\QueryBuilder\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -47,7 +47,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "rmorskate\\QueryBuilder\\QueryBuilderServiceProvider"
+                "Yource\\QueryBuilder\\QueryBuilderServiceProvider"
             ]
         }
     }

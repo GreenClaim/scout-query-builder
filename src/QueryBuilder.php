@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\QueryBuilder;
+namespace Yource\QueryBuilder;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
