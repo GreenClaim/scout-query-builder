@@ -1,17 +1,17 @@
 {
-    "name": "spatie/laravel-query-builder",
+    "name": "rmorskate/scout-query-builder",
     "description": "Easily build Eloquent queries from API requests",
     "keywords": [
-        "spatie",
-        "laravel-query-builder"
+        "rmorskate",
+        "scout-query-builder"
     ],
-    "homepage": "https://github.com/spatie/laravel-query-builder",
+    "homepage": "https://github.com/rmorskate/scout-query-builder",
     "license": "MIT",
     "authors": [
         {
-            "name": "Alex Vanderbist",
-            "email": "alex@spatie.be",
-            "homepage": "https://spatie.be",
+            "name": "Rik Morskate",
+            "email": "rik.morskate@yource.com",
+            "homepage": "https://dev.yource.com",
             "role": "Developer"
         }
     ],
@@ -28,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\QueryBuilder\\": "src"
+            "rmorskate\\QueryBuilder\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\QueryBuilder\\Tests\\": "tests"
+            "rmorskate\\QueryBuilder\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -46,7 +46,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\QueryBuilder\\QueryBuilderServiceProvider"
+                "Rmorskate\\QueryBuilder\\QueryBuilderServiceProvider"
             ]
         }
     }
