@@ -2,7 +2,7 @@
 
 namespace Yource\ScoutQueryBuilder;
 
-use Spatie\QueryBuilder\Exceptions\InvalidColumnName;
+use Yource\ScoutQueryBuilder\Exceptions\InvalidColumnName;
 
 class ColumnNameSanitizer
 {

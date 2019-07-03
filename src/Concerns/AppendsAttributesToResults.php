@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\QueryBuilder\Concerns;
+namespace Yource\ScoutQueryBuilder\Concerns;
 
 use Illuminate\Support\Collection;
-use Spatie\QueryBuilder\Exceptions\InvalidAppendQuery;
+use Yource\ScoutQueryBuilder\Exceptions\InvalidAppendQuery;
 
 trait AppendsAttributesToResults
 {

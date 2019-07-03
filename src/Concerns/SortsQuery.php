@@ -2,7 +2,7 @@
 
 namespace Yource\ScoutQueryBuilder\Concerns;
 
-use GreenClaim\Bundle\Core\Filters\Sorts\Sort;
+use Yource\ScoutQueryBuilder\Sort;
 use Illuminate\Support\Collection;
 use Yource\ScoutQueryBuilder\ColumnNameSanitizer;
 use Yource\ScoutQueryBuilder\Exceptions\InvalidSortQuery;
@@ -48,9 +48,9 @@ trait SortsQuery
     }
 
     /**
-     * @param array|string|\Spatie\QueryBuilder\Sort $sorts
+     * @param array|string|\Yource\ScoutQueryBuilder\Sort $sorts
      *
-     * @return \Spatie\QueryBuilder\QueryBuilder
+     * @return \Yource\ScoutQueryBuilder\QueryBuilder
      */
     public function defaultSort($sorts): self
     {
@@ -58,9 +58,9 @@ trait SortsQuery
     }
 
     /**
-     * @param array|string|\Spatie\QueryBuilder\Sort $sorts
+     * @param array|string|\Yource\ScoutQueryBuilder\Sort $sorts
      *
-     * @return \Spatie\QueryBuilder\QueryBuilder
+     * @return \Yource\ScoutQueryBuilder\QueryBuilder
      */
     public function defaultSorts($sorts): self
     {
@@ -131,8 +131,6 @@ trait SortsQuery
             // sort columns directly. We need to sanitize these column names.
             return ColumnNameSanitizer::sanitize($sortColumn);
         });
-
-        dd($sanitizedSortColumns);
 
         $this->allowedSorts = $sanitizedSortColumns->map(function ($column) {
             return Sort::field($column);

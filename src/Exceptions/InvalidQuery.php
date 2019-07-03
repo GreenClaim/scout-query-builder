@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\QueryBuilder\Exceptions;
+namespace Yource\ScoutQueryBuilder\Exceptions;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

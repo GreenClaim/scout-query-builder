@@ -20,7 +20,7 @@ class ScoutQueryBuilder extends FilterBuilder
         AddsFieldsToQuery;
 //        AppendsAttributesToResults;
 
-    /** @var \Spatie\QueryBuilder\QueryBuilderRequest */
+    /** @var \Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest */
     protected $request;
 
     public function __construct(Model $model, ?Request $request = null)
@@ -38,7 +38,7 @@ class ScoutQueryBuilder extends FilterBuilder
      * @param string|\Illuminate\Database\Query\Builder $baseQuery Model class or base query builder
      * @param \Illuminate\Http\Request                  $request
      *
-     * @return \Spatie\QueryBuilder\QueryBuilder
+     * @return \Yource\ScoutQueryBuilder\QueryBuilder
      */
     public static function for($baseQuery, ?Request $request = null): self
     {

@@ -3,7 +3,7 @@
 namespace Yource\ScoutQueryBuilder\Concerns;
 
 use Illuminate\Support\Collection;
-use Spatie\QueryBuilder\Exceptions\InvalidFilterQuery;
+use Yource\ScoutQueryBuilder\Exceptions\InvalidFilterQuery;
 use Yource\ScoutQueryBuilder\Filter;
 
 trait FiltersQuery

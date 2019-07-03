@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\QueryBuilder\Enums;
+namespace Yource\ScoutQueryBuilder\Enums;
 
 class SortDirection
 {

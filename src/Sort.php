@@ -1,18 +1,18 @@
 <?php
 
-namespace Spatie\QueryBuilder;
+namespace Yource\ScoutQueryBuilder;
 
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\QueryBuilder\Sorts\SortsField;
-use Spatie\QueryBuilder\Enums\SortDirection;
-use Spatie\QueryBuilder\Sorts\Sort as CustomSort;
+use Laravel\Scout\Builder;
+use Yource\ScoutQueryBuilder\Sorts\SortsField;
+use Yource\ScoutQueryBuilder\Enums\SortDirection;
+use Yource\ScoutQueryBuilder\Sorts\Sort as CustomSort;
 
 class Sort
 {
     /** @var string */
     protected $sortClass;
 
-    /** @var string|\Spatie\QueryBuilder\Sorts\Sort */
+    /** @var string|\Yource\ScoutQueryBuilder\Sorts\Sort */
     protected $property;
 
     /** @var string */

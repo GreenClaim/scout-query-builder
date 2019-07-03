@@ -4,7 +4,7 @@ namespace Yource\ScoutQueryBuilder\Concerns;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Spatie\QueryBuilder\Exceptions\InvalidIncludeQuery;
+use Yource\ScoutQueryBuilder\Exceptions\InvalidIncludeQuery;
 
 trait AddsIncludesToQuery
 {

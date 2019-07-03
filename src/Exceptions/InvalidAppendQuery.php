@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\QueryBuilder\Exceptions;
+namespace Yource\ScoutQueryBuilder\Exceptions;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
