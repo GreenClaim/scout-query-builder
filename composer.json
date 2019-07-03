@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^7.1",
+        "babenkoivan/scout-elasticsearch-driver": "^3.10",
         "illuminate/database": "~5.6.34|~5.7.0|~5.8.0",
         "illuminate/http": "~5.6.34|~5.7.0|~5.8.0",
         "illuminate/support": "~5.6.34|~5.7.0|~5.8.0"
@@ -46,7 +47,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Rmorskate\\QueryBuilder\\QueryBuilderServiceProvider"
+                "rmorskate\\QueryBuilder\\QueryBuilderServiceProvider"
             ]
         }
     }
