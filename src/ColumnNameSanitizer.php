@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\QueryBuilder;
+namespace Yource\ScoutQueryBuilder;
 
 use Spatie\QueryBuilder\Exceptions\InvalidColumnName;
 

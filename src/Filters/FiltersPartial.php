@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\QueryBuilder\Filters;
+namespace Yource\ScoutQueryBuilder\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Builder;
 
-class FiltersPartial extends FiltersExact implements Filter
+class FiltersPartial extends FiltersExact
 {
     public function __invoke(Builder $query, $value, string $property): Builder
     {

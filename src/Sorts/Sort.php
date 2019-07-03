@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\QueryBuilder\Sorts;
+namespace Yource\ScoutQueryBuilder\Sorts;
 
-use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Builder;
 
 interface Sort
 {
-    public function __invoke(Builder $query, $descending, string $property) : Builder;
+    public function __invoke(Builder $query, $descending, string $property): Builder;
 }

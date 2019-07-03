@@ -1,14 +1,14 @@
 <?php
 
-namespace Spatie\QueryBuilder\Concerns;
+namespace Yource\ScoutQueryBuilder\Concerns;
 
-use Spatie\QueryBuilder\Filter;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\Exceptions\InvalidFilterQuery;
+use Yource\ScoutQueryBuilder\Filter;
 
 trait FiltersQuery
 {
-    /** @var \Illuminate\Support\Collection */
+    /** @var Collection */
     protected $allowedFilters;
 
     public function allowedFilters($filters): self
@@ -19,7 +19,7 @@ trait FiltersQuery
                 return $filter;
             }
 
-            return Filter::partial($filter);
+            return Filter::Exact($filter);
         });
 
         $this->guardAgainstUnknownFilters();

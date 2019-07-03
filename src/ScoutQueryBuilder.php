@@ -2,18 +2,19 @@
 
 namespace Yource\ScoutQueryBuilder;
 
-use Yource\QueryBuilder\Concerns\AddsFieldsToQuery;
-use Yource\QueryBuilder\Concerns\AddsIncludesToQuery;
-use Yource\QueryBuilder\Concerns\SortsQuery;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use ScoutElastic\Builders\FilterBuilder;
-use Yource\QueryBuilder\QueryBuilderRequest;
+use Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest;
+use Yource\ScoutQueryBuilder\Concerns\AddsFieldsToQuery;
+use Yource\ScoutQueryBuilder\Concerns\AddsIncludesToQuery;
+use Yource\ScoutQueryBuilder\Concerns\SortsQuery;
+use Yource\ScoutQueryBuilder\Concerns\FiltersQuery;
 
 class ScoutQueryBuilder extends FilterBuilder
 {
-    use ScoutFilters,
+    use FiltersQuery,
         SortsQuery,
         AddsIncludesToQuery,
         AddsFieldsToQuery;
@@ -28,7 +29,7 @@ class ScoutQueryBuilder extends FilterBuilder
 
 //        $this->initializeFromBuilder($builder);
 
-        $this->request = QueryBuilderRequest::fromRequest($request ?? request());
+        $this->request = ScoutQueryBuilderRequest::fromRequest($request ?? request());
     }
 
     /**

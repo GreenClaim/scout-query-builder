@@ -1,17 +1,17 @@
 <?php
 
-namespace Yource\QueryBuilder;
+namespace Yource\ScoutQueryBuilder;
 
-use GreenClaim\Bundle\Core\Filters\Filters\Filter as CustomFilter;
-use GreenClaim\Bundle\Core\Filters\Filters\FiltersExact;
-use GreenClaim\Bundle\Core\Filters\Filters\FiltersPartial;
-use GreenClaim\Bundle\Core\Filters\Filters\FiltersScope;
+use Yource\ScoutQueryBuilder\Filters\Filter as CustomFilter;
+use Yource\ScoutQueryBuilder\Filters\FiltersExact;
+use Yource\ScoutQueryBuilder\Filters\FiltersPartial;
+use Yource\ScoutQueryBuilder\Filters\FiltersScope;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Builder;
 
 class Filter
 {
-    /** @var string|\Spatie\QueryBuilder\Filters\Filter */
+    /** @var string|\Yource\ScoutQueryBuilder\Filters\Filter */
     protected $filterClass;
 
     /** @var string */

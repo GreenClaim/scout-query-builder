@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\QueryBuilder;
+namespace Yource\ScoutQueryBuilder;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-class QueryBuilderRequest extends Request
+class ScoutQueryBuilderRequest extends Request
 {
     public static function fromRequest(Request $request): self
     {
