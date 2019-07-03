@@ -57,11 +57,6 @@ class Filter
 //        return new static($property, FiltersPartial::class, $columnName);
 //    }
 
-    public static function scope(string $property, $columnName = null): self
-    {
-        return new static($property, FiltersScope::class, $columnName);
-    }
-
     public static function custom(string $property, $filterClass, $columnName = null): self
     {
         return new static($property, $filterClass, $columnName);

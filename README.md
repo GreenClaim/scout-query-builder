@@ -216,42 +216,10 @@ $users = QueryBuilder::for(User::class)
 // $users will contain all admin users with id 1, 2, 3, 4 or 5
 ```
 
-#### Scope filters
+#### ~~Scope filters~~
 
-Sometimes you'll want to build more advanced filtering queries. This is where scope filters and custom filters come in handy.
-
-Scope filters allow you to easily add [local scopes](https://laravel.com/docs/5.6/eloquent#local-scopes) to your query by adding filters to the URL.
-
-Consider the following scope on your model:
-
-```php
-public function scopeStartsBefore(Builder $query, $date): Builder
-{
-    return $query->where('starts_at', '<=', Carbon::parse($date));
-}
-```
-
-To filter based on the `startsBefore` scope simply add it to the `allowedFilters` on the query builder:
-
-```php
-QueryBuilder::for(Event::class)
-    ->allowedFilters([
-        Filter::scope('starts_before'),
-    ])
-    ->get();
-```
-
-The following filter will now add the `startsBefore` scope to the underlying query:
-
-```
-GET /events?filter[starts_before]=2018-01-01
-```
-
-You can even pass multiple parameters to the scope by passing a comma separated list to the filter:
-
-```
-GET /events?filter[starts_between]=2018-01-01,2018-12-31
-```
+BEAWARE: Laravel scopes require the query to be Illuminate\Database\Eloquent\Builder, the Scout Query Builder is 
+Laravel\Scout\Builder.
 
 #### Custom filters
 
