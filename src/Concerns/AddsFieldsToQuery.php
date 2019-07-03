@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\QueryBuilder\Concerns;
+namespace Yource\ScoutQueryBuilder\Concerns;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Spatie\QueryBuilder\ColumnNameSanitizer;
-use Spatie\QueryBuilder\Exceptions\InvalidFieldQuery;
+use Yource\ScoutQueryBuilder\ColumnNameSanitizer;
+use Yource\ScoutQueryBuilder\Exceptions\InvalidFieldQuery;
 
 trait AddsFieldsToQuery
 {
@@ -100,7 +100,7 @@ trait AddsFieldsToQuery
 
     protected function addModelFieldsToQuery()
     {
-        $modelTableName = $this->getModel()->getTable();
+        $modelTableName = $this->model->getTable();
 
         $modelFields = $this->getRequestedFields()->get($modelTableName);
 

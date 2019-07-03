@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\QueryBuilder\Concerns;
+namespace Yource\ScoutQueryBuilder\Concerns;
 
-use Spatie\QueryBuilder\Sort;
+use GreenClaim\Bundle\Core\Filters\Sorts\Sort;
 use Illuminate\Support\Collection;
-use Spatie\QueryBuilder\ColumnNameSanitizer;
-use Spatie\QueryBuilder\Exceptions\InvalidSortQuery;
+use Yource\ScoutQueryBuilder\ColumnNameSanitizer;
+use Yource\ScoutQueryBuilder\Exceptions\InvalidSortQuery;
 
 trait SortsQuery
 {
@@ -131,6 +131,8 @@ trait SortsQuery
             // sort columns directly. We need to sanitize these column names.
             return ColumnNameSanitizer::sanitize($sortColumn);
         });
+
+        dd($sanitizedSortColumns);
 
         $this->allowedSorts = $sanitizedSortColumns->map(function ($column) {
             return Sort::field($column);

@@ -1,27 +1,27 @@
 <?php
 
-namespace Spatie\QueryBuilder;
+namespace Yource\ScoutQueryBuilder;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
-class QueryBuilderServiceProvider extends ServiceProvider
+class ScoutQueryBuilderServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/query-builder.php' => config_path('query-builder.php'),
+                __DIR__.'/../config/scout-query-builder.php' => config_path('scout-query-builder.php'),
             ], 'config');
         }
 
-        $this->mergeConfigFrom(__DIR__.'/../config/query-builder.php', 'query-builder');
+        $this->mergeConfigFrom(__DIR__.'/../config/scout-query-builder.php', 'scout-query-builder');
 
         /* @deprecated */
         Request::macro('includes', function ($include = null) {
-            $parameter = config('query-builder.parameters.include');
+            $parameter = config('scout-query-builder.parameters.include');
             $includeParts = $this->query($parameter);
 
             if (! is_array($includeParts)) {
@@ -39,7 +39,7 @@ class QueryBuilderServiceProvider extends ServiceProvider
 
         /* @deprecated */
         Request::macro('appends', function ($append = null) {
-            $parameter = config('query-builder.parameters.append');
+            $parameter = config('scout-query-builder.parameters.append');
             $appendParts = $this->query($parameter);
 
             if (! is_array($appendParts)) {
@@ -57,7 +57,7 @@ class QueryBuilderServiceProvider extends ServiceProvider
 
         /* @deprecated */
         Request::macro('filters', function ($filter = null) {
-            $filterParts = $this->query(config('query-builder.parameters.filter'), []);
+            $filterParts = $this->query(config('scout-query-builder.parameters.filter'), []);
 
             if (is_string($filterParts)) {
                 return collect();
@@ -96,7 +96,7 @@ class QueryBuilderServiceProvider extends ServiceProvider
 
         /* @deprecated */
         Request::macro('fields', function (): Collection {
-            $fieldsParameter = config('query-builder.parameters.fields');
+            $fieldsParameter = config('scout-query-builder.parameters.fields');
 
             $fieldsPerTable = collect($this->query($fieldsParameter));
 
@@ -111,7 +111,7 @@ class QueryBuilderServiceProvider extends ServiceProvider
 
         /* @deprecated */
         Request::macro('sort', function ($default = null) {
-            return $this->query(config('query-builder.parameters.sort'), $default);
+            return $this->query(config('scout-query-builder.parameters.sort'), $default);
         });
 
         /* @deprecated */

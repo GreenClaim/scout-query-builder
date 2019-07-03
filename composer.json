@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yource\\QueryBuilder\\": "src"
+            "Yource\\ScoutQueryBuilder\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yource\\QueryBuilder\\Tests\\": "tests"
+            "Yource\\ScoutQueryBuilder\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -47,7 +47,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Yource\\QueryBuilder\\QueryBuilderServiceProvider"
+                "Yource\\ScoutQueryBuilder\\ScoutQueryBuilderServiceProvider"
             ]
         }
     }

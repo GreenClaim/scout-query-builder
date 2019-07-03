@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\QueryBuilder\Concerns;
+namespace Yource\ScoutQueryBuilder\Concerns;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;

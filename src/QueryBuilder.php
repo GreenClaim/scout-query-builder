@@ -1,32 +1,32 @@
 <?php
 
-namespace Yource\QueryBuilder;
+namespace Yource\ScoutQueryBuilder;
 
+use Yource\QueryBuilder\Concerns\AddsFieldsToQuery;
+use Yource\QueryBuilder\Concerns\AddsIncludesToQuery;
+use Yource\QueryBuilder\Concerns\SortsQuery;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\QueryBuilder\Concerns\SortsQuery;
-use Spatie\QueryBuilder\Concerns\FiltersQuery;
-use Spatie\QueryBuilder\Concerns\AddsFieldsToQuery;
-use Spatie\QueryBuilder\Concerns\AddsIncludesToQuery;
-use Spatie\QueryBuilder\Concerns\AppendsAttributesToResults;
+use ScoutElastic\Builders\FilterBuilder;
+use Yource\QueryBuilder\QueryBuilderRequest;
 
-class QueryBuilder extends Builder
+class ScoutQueryBuilder extends FilterBuilder
 {
-    use FiltersQuery,
+    use ScoutFilters,
         SortsQuery,
         AddsIncludesToQuery,
-        AddsFieldsToQuery,
-        AppendsAttributesToResults;
+        AddsFieldsToQuery;
+//        AppendsAttributesToResults;
 
     /** @var \Spatie\QueryBuilder\QueryBuilderRequest */
     protected $request;
 
-    public function __construct(Builder $builder, ? Request $request = null)
+    public function __construct(Model $model, ?Request $request = null)
     {
-        parent::__construct(clone $builder->getQuery());
+        parent::__construct($model);
 
-        $this->initializeFromBuilder($builder);
+//        $this->initializeFromBuilder($builder);
 
         $this->request = QueryBuilderRequest::fromRequest($request ?? request());
     }
@@ -48,78 +48,88 @@ class QueryBuilder extends Builder
         return new static($baseQuery, $request ?? request());
     }
 
-    public function getQuery()
-    {
-        $this->parseSorts();
-
-        if (! $this->allowedFields instanceof Collection) {
-            $this->addAllRequestedFields();
-        }
-
-        return parent::getQuery();
-    }
+//    public function getQuery()
+//    {
+//        $this->parseSorts();
+//
+//        if (! $this->allowedFields instanceof Collection) {
+//            $this->addAllRequestedFields();
+//        }
+//
+//        return parent::getQuery();
+//    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function get($columns = ['*'])
+//    {
+//        $this->parseSorts();
+//
+//        if (! $this->allowedFields instanceof Collection) {
+//            $this->addAllRequestedFields();
+//        }
+//
+//        $results = parent::get($columns);
+//
+//        if ($this->request->appends()->isNotEmpty()) {
+//            $results = $this->addAppendsToResults($results);
+//        }
+//
+//        return $results;
+//    }
 
     /**
-     * {@inheritdoc}
+     *
+     * @todo what to do with $columns
+     * @param null $perPage
+     * @param array $columns
+     * @param string $pageName
+     * @param null $page
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function get($columns = ['*'])
-    {
-        $this->parseSorts();
-
-        if (! $this->allowedFields instanceof Collection) {
-            $this->addAllRequestedFields();
-        }
-
-        $results = parent::get($columns);
-
-        if ($this->request->appends()->isNotEmpty()) {
-            $results = $this->addAppendsToResults($results);
-        }
-
-        return $results;
-    }
-
     public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
     {
         $this->parseSorts();
 
-        if (! $this->allowedFields instanceof Collection) {
+        if (!$this->allowedFields instanceof Collection) {
             $this->addAllRequestedFields();
         }
 
-        return parent::paginate($perPage, $columns, $pageName, $page);
+        return parent::paginate($perPage, $pageName, $page);
     }
+//
+//    public function simplePaginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+//    {
+//        $this->parseSorts();
+//
+//        if (! $this->allowedFields instanceof Collection) {
+//            $this->addAllRequestedFields();
+//        }
+//
+//        return parent::simplePaginate($perPage, $columns, $pageName, $page);
+//    }
 
-    public function simplePaginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
-    {
-        $this->parseSorts();
-
-        if (! $this->allowedFields instanceof Collection) {
-            $this->addAllRequestedFields();
-        }
-
-        return parent::simplePaginate($perPage, $columns, $pageName, $page);
-    }
-
-    /**
-     * Add the model, scopes, eager loaded relationships, local macro's and onDelete callback
-     * from the $builder to this query builder.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     */
-    protected function initializeFromBuilder(Builder $builder)
-    {
-        $this->setModel($builder->getModel())
-            ->setEagerLoads($builder->getEagerLoads());
-
-        $builder->macro('getProtected', function (Builder $builder, string $property) {
-            return $builder->{$property};
-        });
-
-        $this->scopes = $builder->getProtected('scopes');
-
-        $this->localMacros = $builder->getProtected('localMacros');
-
-        $this->onDelete = $builder->getProtected('onDelete');
-    }
+//    /**
+//     * Add the model, scopes, eager loaded relationships, local macro's and onDelete callback
+//     * from the $builder to this query builder.
+//     *
+//     * @todo eager Load?
+//     * @param Builder $builder
+//     */
+//    protected function initializeFromBuilder(Builder $builder)
+//    {
+////        $this->setModel($builder->getModel())
+////            ->setEagerLoads($builder->getEagerLoads());
+//
+////        $builder->macro('getProtected', function (Builder $builder, string $property) {
+////            return $builder->{$property};
+////        });
+////
+////        $this->scopes = $builder->getProtected('scopes');
+////
+////        $this->localMacros = $builder->getProtected('localMacros');
+////
+////        $this->onDelete = $builder->getProtected('onDelete');
+//    }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\QueryBuilder;
+namespace Yource\QueryBuilder;
 
+use GreenClaim\Bundle\Core\Filters\Filters\Filter as CustomFilter;
+use GreenClaim\Bundle\Core\Filters\Filters\FiltersExact;
+use GreenClaim\Bundle\Core\Filters\Filters\FiltersPartial;
+use GreenClaim\Bundle\Core\Filters\Filters\FiltersScope;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\QueryBuilder\Filters\FiltersExact;
-use Spatie\QueryBuilder\Filters\FiltersScope;
-use Spatie\QueryBuilder\Filters\FiltersPartial;
-use Spatie\QueryBuilder\Filters\Filter as CustomFilter;
+use Laravel\Scout\Builder;
 
 class Filter
 {
@@ -47,22 +47,22 @@ class Filter
         ($filterClass)($builder, $valueToFilter, $this->columnName);
     }
 
-    public static function exact(string $property, ?string $columnName = null) : self
+    public static function exact(string $property, ?string $columnName = null): self
     {
         return new static($property, FiltersExact::class, $columnName);
     }
 
-    public static function partial(string $property, $columnName = null) : self
-    {
-        return new static($property, FiltersPartial::class, $columnName);
-    }
+//    public static function partial(string $property, $columnName = null): self
+//    {
+//        return new static($property, FiltersPartial::class, $columnName);
+//    }
 
-    public static function scope(string $property, $columnName = null) : self
+    public static function scope(string $property, $columnName = null): self
     {
         return new static($property, FiltersScope::class, $columnName);
     }
 
-    public static function custom(string $property, $filterClass, $columnName = null) : self
+    public static function custom(string $property, $filterClass, $columnName = null): self
     {
         return new static($property, $filterClass, $columnName);
     }
