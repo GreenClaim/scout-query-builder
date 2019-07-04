@@ -2,6 +2,8 @@
 
 namespace Yource\ScoutQueryBuilder;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

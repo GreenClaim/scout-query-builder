@@ -15,7 +15,7 @@ class ScoutQueryBuilderRequest extends Request
 
     public function includes()
     {
-        $parameter = config('query-builder.parameters.include');
+        $parameter = config('scout-query-builder.parameters.include');
 
         $includeParts = $this->query($parameter);
 
@@ -28,7 +28,7 @@ class ScoutQueryBuilderRequest extends Request
 
     public function appends()
     {
-        $appendParameter = config('query-builder.parameters.append');
+        $appendParameter = config('scout-query-builder.parameters.append');
 
         $appendParts = $this->query($appendParameter);
 
@@ -41,7 +41,7 @@ class ScoutQueryBuilderRequest extends Request
 
     public function filters()
     {
-        $filterParameter = config('query-builder.parameters.filter');
+        $filterParameter = config('scout-query-builder.parameters.filter');
 
         $filterParts = $this->query($filterParameter, []);
 
@@ -58,7 +58,7 @@ class ScoutQueryBuilderRequest extends Request
 
     public function fields(): Collection
     {
-        $fieldsParameter = config('query-builder.parameters.fields');
+        $fieldsParameter = config('scout-query-builder.parameters.fields');
 
         $fieldsPerTable = collect($this->query($fieldsParameter));
 
@@ -73,7 +73,7 @@ class ScoutQueryBuilderRequest extends Request
 
     public function sorts(): Collection
     {
-        $sortParameter = config('query-builder.parameters.sort');
+        $sortParameter = config('scout-query-builder.parameters.sort');
 
         $sortParts = $this->query($sortParameter);
 
@@ -82,6 +82,34 @@ class ScoutQueryBuilderRequest extends Request
         }
 
         return collect($sortParts)->filter();
+    }
+
+    /**
+     * Gets the page paramerers from the url query if not set get defaults
+     *
+     * @return Collection
+     */
+    public function page(): Collection
+    {
+        $pageParameter = config('scout-query-builder.parameters.page');
+        $pageNumberParameter = config('scout-query-builder.number_parameter');
+        $pageSizeParameter = config('scout-query-builder.size_parameter');
+
+        $pageInput = $this->query($pageParameter);
+
+        if (!empty($pageInput[$pageSizeParameter])) {
+            $pageParts['size'] = $pageInput[$pageNumberParameter];
+        } else {
+            $pageParts['size'] = config('scout-query-builder.default_size');
+        }
+
+        if (!empty($pageInput[$pageNumberParameter])) {
+            $pageParts['number'] = $pageInput[$pageNumberParameter];
+        } else {
+            $pageParts['number'] = 1;
+        }
+
+        return collect($pageParts)->filter();
     }
 
     protected function getFilterValue($value)

@@ -59,8 +59,6 @@ class ScoutQueryBuilder extends FilterBuilder
             $this->addAllRequestedFields();
         }
 
-        dd($this);
-
         return parent::getQuery();
     }
 
@@ -162,6 +160,31 @@ class ScoutQueryBuilder extends FilterBuilder
         }
 
         return parent::paginateRaw($perPage, $pageName, $page);
+    }
+
+    /**
+     *
+     * @todo what to do with $columns
+     *
+     * @param null $perPage
+     * @param array $columns
+     * @param string $pageName
+     * @param null $page
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function jsonPaginate(
+        int $maxResults = null,
+        int $defaultSize = null
+    ): LengthAwarePaginator {
+        $this->parseSorts();
+
+        $page = $this->request->page();
+
+        if (!$this->allowedFields instanceof Collection) {
+            $this->addAllRequestedFields();
+        }
+
+        return parent::paginate($page['size'], 'page', $page['number']);
     }
 
 //    /**
