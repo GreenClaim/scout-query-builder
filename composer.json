@@ -1,16 +1,16 @@
 {
-    "name": "rmorskate/scout-query-builder",
+    "name": "GreenClaim/scout-query-builder",
     "description": "Easily build Eloquent queries from API requests",
     "keywords": [
         "rmorskate",
         "scout-query-builder"
     ],
-    "homepage": "https://github.com/rmorskate/scout-query-builder",
+    "homepage": "https://github.com/GreenClaim/scout-query-builder",
     "license": "MIT",
     "authors": [
         {
             "name": "Rik Morskate",
-            "email": "rik.morskate@yource.com",
+            "email": "technical@yource.com",
             "homepage": "https://dev.yource.com",
             "role": "Developer"
         }
