@@ -57,12 +57,12 @@ Have a look at the [usage section](#usage) below for advanced examples and featu
 You can install the package via composer:
 
 ```bash
-composer require spatie/laravel-query-builder
+composer require GreenClaim/scout-query-builder
 ```
 
 You can optionally publish the config file with:
 ```bash
-php artisan vendor:publish --provider="Spatie\QueryBuilder\QueryBuilderServiceProvider" --tag="config"
+php artisan vendor:publish --provider="GreenClaim\ScoutQueryBuilder\ScoutQueryBuilderServiceProvider" --tag="config"
 ```
 
 This is the contents of the published config file:
