@@ -5,10 +5,12 @@ namespace Yource\ScoutQueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use ScoutElastic\Builders\FilterBuilder;
 use Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest;
 use Yource\ScoutQueryBuilder\Concerns\AddsFieldsToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AddsIncludesToQuery;
+use Yource\ScoutQueryBuilder\Concerns\AppendsAttributesToResults;
 use Yource\ScoutQueryBuilder\Concerns\SortsQuery;
 use Yource\ScoutQueryBuilder\Concerns\FiltersQuery;
 
@@ -17,8 +19,8 @@ class ScoutQueryBuilder extends FilterBuilder
     use FiltersQuery,
         SortsQuery,
         AddsIncludesToQuery,
-        AddsFieldsToQuery;
-//        AppendsAttributesToResults;
+        AddsFieldsToQuery,
+        AppendsAttributesToResults;
 
     /** @var \Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest */
     protected $request;
@@ -49,47 +51,84 @@ class ScoutQueryBuilder extends FilterBuilder
         return new static($baseQuery, $request ?? request());
     }
 
-//    public function getQuery()
-//    {
-//        $this->parseSorts();
-//
-//        if (! $this->allowedFields instanceof Collection) {
-//            $this->addAllRequestedFields();
-//        }
-//
-//        return parent::getQuery();
-//    }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function get($columns = ['*'])
-//    {
-//        $this->parseSorts();
-//
-//        if (! $this->allowedFields instanceof Collection) {
-//            $this->addAllRequestedFields();
-//        }
-//
-//        $results = parent::get($columns);
-//
-//        if ($this->request->appends()->isNotEmpty()) {
-//            $results = $this->addAppendsToResults($results);
-//        }
-//
-//        return $results;
-//    }
+    public function getQuery()
+    {
+        $this->parseSorts();
+
+        if (!$this->allowedFields instanceof Collection) {
+            $this->addAllRequestedFields();
+        }
+
+        dd($this);
+
+        return parent::getQuery();
+    }
+
+    /**
+     * The scores computed by Elasticsearch
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html
+     * @return array|mixed
+     */
+    public function explain()
+    {
+        $this->parseSorts();
+
+        if (!$this->allowedFields instanceof Collection) {
+            $this->addAllRequestedFields();
+        }
+
+        return $this->explain();
+    }
+
+    /**
+     * Gives insights in the search requests
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-profile.html
+     * @return array|mixed
+     */
+    public function profile()
+    {
+        $this->parseSorts();
+
+        if (!$this->allowedFields instanceof Collection) {
+            $this->addAllRequestedFields();
+        }
+
+        return $this->profile();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get($columns = ['*'])
+    {
+        $this->parseSorts();
+
+        if (!$this->allowedFields instanceof Collection) {
+            $this->addAllRequestedFields();
+        }
+
+        $results = parent::get($columns);
+
+        if ($this->request->appends()->isNotEmpty()) {
+            $results = $this->addAppendsToResults($results);
+        }
+
+        return $results;
+    }
 
     /**
      *
      * @todo what to do with $columns
+     *
      * @param null $perPage
      * @param array $columns
      * @param string $pageName
      * @param null $page
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null): LengthAwarePaginator
     {
         $this->parseSorts();
 
@@ -99,17 +138,31 @@ class ScoutQueryBuilder extends FilterBuilder
 
         return parent::paginate($perPage, $pageName, $page);
     }
-//
-//    public function simplePaginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
-//    {
-//        $this->parseSorts();
-//
-//        if (! $this->allowedFields instanceof Collection) {
-//            $this->addAllRequestedFields();
-//        }
-//
-//        return parent::simplePaginate($perPage, $columns, $pageName, $page);
-//    }
+
+    /**
+     *
+     * @todo what to do with $columns
+     *
+     * @param null $perPage
+     * @param array $columns
+     * @param string $pageName
+     * @param null $page
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function paginateRaw(
+        $perPage = null,
+        $columns = ['*'],
+        $pageName = 'page',
+        $page = null
+    ): LengthAwarePaginator {
+        $this->parseSorts();
+
+        if (!$this->allowedFields instanceof Collection) {
+            $this->addAllRequestedFields();
+        }
+
+        return parent::paginateRaw($perPage, $pageName, $page);
+    }
 
 //    /**
 //     * Add the model, scopes, eager loaded relationships, local macro's and onDelete callback
