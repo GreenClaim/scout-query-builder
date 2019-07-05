@@ -219,29 +219,31 @@ $users = QueryBuilder::for(User::class)
 #### ~~Scope filters~~
 
 BEAWARE: Laravel scopes require the query to be Illuminate\Database\Eloquent\Builder, the Scout Query Builder is 
-Laravel\Scout\Builder.
+Laravel\Scout\Builder. So scopes can not be used.
 
 #### Custom filters
 
-You can specify custom filters using the `Filter::custom()` method. Custom filters are simple, invokable classes that implement the `\Spatie\QueryBuilder\Filters\Filter` interface. This way you can create any query your heart desires.
+You can specify custom filters using the `Filter::custom()` method. Custom filters are simple, invokable classes that implement the `Yource\ScoutQueryBuilder\Filters\Filter` interface. This way you can create any query your heart desires.
 
 For example:
 
 ``` php
-use Spatie\QueryBuilder\Filters\Filter;
-use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Builder;
+use Yource\ScoutQueryBuilder\Filters\Filter;
 
-class FiltersUserPermission implements Filter
+class FiltersType implements Filter
 {
-    public function __invoke(Builder $query, $value, string $property) : Builder
+    public function __invoke(Builder $query, $value, string $property): Builder
     {
-        return $query->whereHas('permissions', function (Builder $query) use ($value) {
-            $query->where('name', $value);
-        });
+        $values = collect($value)->map(function ($value) {
+            return 'GreenClaim\\Bundle\\Task\\Tasks\\' . $value;
+        })->toArray();
+
+        return $query->whereIn('task', $values);
     }
 }
 
-use Spatie\QueryBuilder\Filter;
+use Yource\ScoutQueryBuilder\Filter;
 
 // GET /users?filter[permission]=createPosts
 $users = QueryBuilder::for(User::class)
