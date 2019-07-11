@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use ScoutElastic\Builders\FilterBuilder;
+use ScoutElastic\Builders\SearchBuilder;
 use Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest;
 use Yource\ScoutQueryBuilder\Concerns\AddsFieldsToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AddsIncludesToQuery;
@@ -14,7 +14,7 @@ use Yource\ScoutQueryBuilder\Concerns\AppendsAttributesToResults;
 use Yource\ScoutQueryBuilder\Concerns\SortsQuery;
 use Yource\ScoutQueryBuilder\Concerns\FiltersQuery;
 
-class ScoutQueryBuilder extends FilterBuilder
+class ScoutQueryBuilder extends SearchBuilder
 {
     use FiltersQuery,
         SortsQuery,
@@ -68,7 +68,7 @@ class ScoutQueryBuilder extends FilterBuilder
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html
      * @return array|mixed
      */
-    public function explain()
+    public function getExplain()
     {
         $this->parseSorts();
 
@@ -85,7 +85,7 @@ class ScoutQueryBuilder extends FilterBuilder
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-profile.html
      * @return array|mixed
      */
-    public function profile()
+    public function getProfile()
     {
         $this->parseSorts();
 
@@ -94,6 +94,17 @@ class ScoutQueryBuilder extends FilterBuilder
         }
 
         return $this->profile();
+    }
+
+    /**
+     *
+     *
+     * @see https://github.com/babenkoivan/scout-elasticsearch-driver#search-rules
+     * @return array|mixed
+     */
+    public function useRule($searchRule)
+    {
+        return $this->rule($searchRule);
     }
 
     /**
