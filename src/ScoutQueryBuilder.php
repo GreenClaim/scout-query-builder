@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use ScoutElastic\Builders\SearchBuilder;
+use ScoutElastic\Builders\FilterBuilder;
 use Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest;
 use Yource\ScoutQueryBuilder\Concerns\AddsFieldsToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AddsIncludesToQuery;
@@ -14,7 +14,7 @@ use Yource\ScoutQueryBuilder\Concerns\AppendsAttributesToResults;
 use Yource\ScoutQueryBuilder\Concerns\SortsQuery;
 use Yource\ScoutQueryBuilder\Concerns\FiltersQuery;
 
-class ScoutQueryBuilder extends SearchBuilder
+class ScoutQueryBuilder extends FilterBuilder
 {
     use FiltersQuery,
         SortsQuery,
