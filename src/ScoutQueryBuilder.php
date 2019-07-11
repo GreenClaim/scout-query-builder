@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use ScoutElastic\Builders\FilterBuilder;
+use ScoutElastic\Builders\SearchBuilder;
 use Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest;
 use Yource\ScoutQueryBuilder\Concerns\AddsFieldsToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AddsIncludesToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AppendsAttributesToResults;
 use Yource\ScoutQueryBuilder\Concerns\SortsQuery;
 use Yource\ScoutQueryBuilder\Concerns\FiltersQuery;
+use Yource\ScoutQueryBuilder\Builders\ExtendedSearchBuilder;
 
-class ScoutQueryBuilder extends FilterBuilder
+class ScoutQueryBuilder extends ExtendedSearchBuilder
 {
     use FiltersQuery,
         SortsQuery,
@@ -25,9 +26,9 @@ class ScoutQueryBuilder extends FilterBuilder
     /** @var \Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest */
     protected $request;
 
-    public function __construct(Model $model, ?Request $request = null)
+    public function __construct(Model $model, $query, ?Request $request = null)
     {
-        parent::__construct($model);
+        parent::__construct($model, $query);
 
 //        $this->initializeFromBuilder($builder);
 
@@ -42,13 +43,13 @@ class ScoutQueryBuilder extends FilterBuilder
      *
      * @return \Yource\ScoutQueryBuilder\QueryBuilder
      */
-    public static function for($baseQuery, ?Request $request = null): self
+    public static function for($baseQuery, $query = '*', ?Request $request = null): self
     {
         if (is_string($baseQuery)) {
             $baseQuery = ($baseQuery)::query();
         }
 
-        return new static($baseQuery, $request ?? request());
+        return new static($baseQuery, $query, $request ?? request());
     }
 
     public function getQuery()
@@ -94,17 +95,6 @@ class ScoutQueryBuilder extends FilterBuilder
         }
 
         return $this->profile();
-    }
-
-    /**
-     *
-     *
-     * @see https://github.com/babenkoivan/scout-elasticsearch-driver#search-rules
-     * @return array|mixed
-     */
-    public function useRule($searchRule)
-    {
-        return $this->rule($searchRule);
     }
 
     /**
