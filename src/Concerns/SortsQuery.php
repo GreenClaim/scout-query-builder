@@ -86,10 +86,10 @@ trait SortsQuery
 
         $this->sortsWereParsed = true;
 
-        if (! $this->allowedSorts instanceof Collection) {
+        if (!$this->allowedSorts instanceof Collection) {
             $this->addDefaultSorts();
             $this->allowRepeatedParse();
-        } else {
+        } else { // Not sure what this is surposed to do...
             $this->purgeGeneratedDefaultSorts();
         }
 
@@ -101,8 +101,7 @@ trait SortsQuery
             });
         }
 
-        $sorts
-            ->each(function (string $property) {
+        $sorts->each(function (string $property) {
                 $descending = $property[0] === '-';
 
                 $key = ltrim($property, '-');
@@ -159,11 +158,14 @@ trait SortsQuery
         $this->sortsWereParsed = false;
     }
 
+    /**
+     * @todo not sure if this works as it is surposed to
+     */
     protected function purgeGeneratedDefaultSorts(): void
     {
-        $this->query->orders = collect($this->query->orders)
+        $this->orders = collect($this->orders)
             ->reject(function ($order) {
-                if (! isset($order['column'])) {
+                if (!isset($order['column'])) {
                     return false;
                 }
 
