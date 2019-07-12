@@ -98,7 +98,7 @@ class ScoutQueryBuilderRequest extends Request
         $pageInput = $this->query($pageParameter);
 
         if (!empty($pageInput[$pageSizeParameter])) {
-            $pageParts['size'] = $pageInput[$pageNumberParameter];
+            $pageParts['size'] = $pageInput[$pageSizeParameter];
         } else {
             $pageParts['size'] = config('scout-query-builder.default_size');
         }
