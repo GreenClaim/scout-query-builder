@@ -12,7 +12,7 @@ class FiltersExact implements Filter
 
     public function __invoke(Builder $query, $value, string $property): Builder
     {
-        if ($this->isRelationProperty($query, $property)) {
+        if ($this->isNestedProperty($query, $property)) {
             return $this->withRelationConstraint($query, $value, $property);
         }
 
@@ -23,7 +23,7 @@ class FiltersExact implements Filter
         return $query->where($property, '=', $value);
     }
 
-    protected function isRelationProperty(Builder $query, string $property): bool
+    protected function isNestedProperty(Builder $query, string $property): bool
     {
         if (! Str::contains($property, '.')) {
             return false;
@@ -33,11 +33,19 @@ class FiltersExact implements Filter
             return false;
         }
 
-        if (Str::startsWith($property, $query->getModel()->getTable() . '.')) {
-            return false;
+        return $this->getMappingTypeForProperty($query, $property) === 'nested';
+    }
+
+    protected function getMappingTypeForProperty(Builder $query, string $property): bool
+    {
+        $properties = explode('.', $property);
+
+        $mapping = $query->model->getMapping();
+        foreach ($properties as $property) {
+            $mapping = $mapping['properties'][$property];
         }
 
-        return true;
+        return $mapping['type'];
     }
 
     protected function withRelationConstraint(Builder $query, $value, string $property): Builder
