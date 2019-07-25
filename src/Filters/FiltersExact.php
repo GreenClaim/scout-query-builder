@@ -5,6 +5,7 @@ namespace Yource\ScoutQueryBuilder\Filters;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Scout\Builder;
+use Yource\ScoutQueryBuilder\ScoutQueryBuilder;
 
 class FiltersExact implements Filter
 {
@@ -25,7 +26,7 @@ class FiltersExact implements Filter
 
     protected function isNestedProperty(Builder $query, string $property): bool
     {
-        if (! Str::contains($property, '.')) {
+        if (!Str::contains($property, '.')) {
             return false;
         }
 
@@ -33,35 +34,27 @@ class FiltersExact implements Filter
             return false;
         }
 
-        return $this->getMappingTypeForProperty($query, $property) === 'nested';
+        $properties = explode('.', $property);
+        $mappingType = $this->getMappingTypeForProperty($query, $properties[0]);
+
+        return $mappingType === 'nested';
     }
 
-    protected function getMappingTypeForProperty(Builder $query, string $property): bool
+    protected function getMappingTypeForProperty(Builder $query, string $property)
+    {
+        $mapping = $query->model->getMapping();
+        $propertyMapping = $mapping['properties'][$property];
+
+        return $propertyMapping['type'];
+    }
+
+    protected function withRelationConstraint($query, $value, string $property): Builder
     {
         $properties = explode('.', $property);
 
-        $mapping = $query->model->getMapping();
-        foreach ($properties as $property) {
-            $mapping = $mapping['properties'][$property];
-        }
+        $path = $properties[0];
+        $field = $properties[1];
 
-        return $mapping['type'];
-    }
-
-    protected function withRelationConstraint(Builder $query, $value, string $property): Builder
-    {
-        [$relation, $property] = collect(explode('.', $property))
-            ->pipe(function (Collection $parts) {
-                return [
-                    $parts->except(count($parts) - 1)->map([Str::class, 'camel'])->implode('.'),
-                    $parts->last(),
-                ];
-            });
-
-        return $query->whereHas($relation, function (Builder $query) use ($value, $relation, $property) {
-            $this->relationConstraints[] = $property = $query->getModel()->getTable() . '.' . $property;
-
-            $this->__invoke($query, $value, $property);
-        });
+        return $query->whereHas($path, $field, $value);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Yource\ScoutQueryBuilder\Builders;
 
+use Closure;
 use ScoutElastic\Builders\SearchBuilder;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
@@ -98,6 +99,35 @@ class ExtendedSearchBuilder extends SearchBuilder
                     ],
                 ],
             ]
+        ];
+
+        return $this;
+    }
+
+    /**
+     * Add a where nested object has value condition.
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
+     *
+     * @todo ripoff Eloquent whereHas to support closures, I want to be able to use queries on the nested object
+     *
+     * @param string $path the nested object where the value should excist
+     * @param mixed $value
+     * @return $this
+     */
+    public function whereHas($path, $field, $value)
+    {
+        $this->wheres['must']['nested'] = [
+            'path' => $path,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        'match' => [
+                            $path . '.' . $field => $value,
+                        ]
+                    ],
+                ],
+            ],
         ];
 
         return $this;
