@@ -28,7 +28,9 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
 
     public function __construct(Model $model, $query, ?Request $request = null)
     {
-        parent::__construct($model, $query);
+        $softDelete = config('scout.soft_delete', false);
+
+        parent::__construct($model, $query, null, $softDelete);
 
 //        $this->initializeFromBuilder($builder);
 
