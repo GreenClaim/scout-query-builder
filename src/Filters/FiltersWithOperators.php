@@ -22,7 +22,7 @@ class FiltersWithOperators implements Filter
         $operators = [
             'gt'  => '>',
             'gte' => '>=',
-            'lt'  => '>',
+            'lt'  => '<',
             'lte' => '<=',
             'eq'  => '=',
             'neq' => '!=',
