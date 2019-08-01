@@ -2,12 +2,12 @@
 
 namespace Yource\ScoutQueryBuilder;
 
+use Illuminate\Support\Collection;
+use Laravel\Scout\Builder;
 use Yource\ScoutQueryBuilder\Filters\Filter as CustomFilter;
 use Yource\ScoutQueryBuilder\Filters\FiltersExact;
 use Yource\ScoutQueryBuilder\Filters\FiltersPartial;
-use Yource\ScoutQueryBuilder\Filters\FiltersScope;
-use Illuminate\Support\Collection;
-use Laravel\Scout\Builder;
+use Yource\ScoutQueryBuilder\Filters\FiltersWithOperators;
 
 class Filter
 {
@@ -50,6 +50,11 @@ class Filter
     public static function exact(string $property, ?string $columnName = null): self
     {
         return new static($property, FiltersExact::class, $columnName);
+    }
+
+    public static function withOperators(string $property, ?string $columnName = null): self
+    {
+        return new static($property, FiltersWithOperators::class, $columnName);
     }
 
 //    public static function partial(string $property, $columnName = null): self
