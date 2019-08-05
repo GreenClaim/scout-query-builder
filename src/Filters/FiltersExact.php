@@ -2,10 +2,8 @@
 
 namespace Yource\ScoutQueryBuilder\Filters;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Scout\Builder;
-use Yource\ScoutQueryBuilder\ScoutQueryBuilder;
 
 class FiltersExact implements Filter
 {
@@ -45,7 +43,7 @@ class FiltersExact implements Filter
         $mapping = $query->model->getMapping();
         $propertyMapping = $mapping['properties'][$property];
 
-        return $propertyMapping['type'];
+        return $propertyMapping['type'] ?? null;
     }
 
     protected function withRelationConstraint($query, $value, string $property): Builder
