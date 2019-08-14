@@ -117,7 +117,7 @@ class ExtendedSearchBuilder extends SearchBuilder
      */
     public function whereHas($path, $field, $value)
     {
-        $this->wheres['must']['nested'] = [
+        $this->wheres['must'][]['nested'] = [
             'path' => $path,
             'query' => [
                 'bool' => [
@@ -146,7 +146,7 @@ class ExtendedSearchBuilder extends SearchBuilder
      */
     public function whereHasIn($path, $field, $value)
     {
-        $this->wheres['must']['nested'] = [
+        $this->wheres['must'][]['nested'] = [
             'path' => $path,
             'query' => [
                 'bool' => [

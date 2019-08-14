@@ -55,6 +55,10 @@ class FiltersExact implements Filter
         $path = $properties[0];
         $field = $properties[1];
 
+        if (is_array($value)) {
+            return $query->whereHasIn($path, $field, $value);
+        }
+
         return $query->whereHas($path, $field, $value);
     }
 }
