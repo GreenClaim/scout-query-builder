@@ -32,8 +32,6 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
 
         parent::__construct($model, $query, null, $softDelete);
 
-//        $this->initializeFromBuilder($builder);
-
         $this->request = ScoutQueryBuilderRequest::fromRequest($request ?? request());
     }
 
@@ -189,27 +187,4 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
 
         return parent::paginate($page['size'], 'page', $page['number']);
     }
-
-//    /**
-//     * Add the model, scopes, eager loaded relationships, local macro's and onDelete callback
-//     * from the $builder to this query builder.
-//     *
-//     * @todo eager Load?
-//     * @param Builder $builder
-//     */
-//    protected function initializeFromBuilder(Builder $builder)
-//    {
-////        $this->setModel($builder->getModel())
-////            ->setEagerLoads($builder->getEagerLoads());
-//
-////        $builder->macro('getProtected', function (Builder $builder, string $property) {
-////            return $builder->{$property};
-////        });
-////
-////        $this->scopes = $builder->getProtected('scopes');
-////
-////        $this->localMacros = $builder->getProtected('localMacros');
-////
-////        $this->onDelete = $builder->getProtected('onDelete');
-//    }
 }

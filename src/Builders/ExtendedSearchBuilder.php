@@ -3,12 +3,38 @@
 namespace Yource\ScoutQueryBuilder\Builders;
 
 use Closure;
+use ScoutElastic\Builders\FilterBuilder;
 use ScoutElastic\Builders\SearchBuilder;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 
 class ExtendedSearchBuilder extends SearchBuilder
 {
+    /**
+     * Add a where condition but first figure out if a whereExists or whereNotExists should be used
+     */
+    public function where($field, $value)
+    {
+        $args = func_get_args();
+
+        if (count($args) == 3) {
+            list($field, $operator, $value) = $args;
+        } else {
+            $operator = '=';
+        }
+
+        // If the value is null and the operator = or != we should use an exists where
+        if (
+            ($value === null || $value === 'null')
+            && in_array($operator, ['=', '!=', '<>'], true)
+        ) {
+            $whereExists = $this->getWhereExists($operator);
+            return $this->$whereExists($field);
+        }
+
+        return parent::where($field, $operator, $value);
+    }
+
     /**
      * Add a where exact or field doesn't exists or is null condition.
      *
@@ -160,5 +186,21 @@ class ExtendedSearchBuilder extends SearchBuilder
         ];
 
         return $this;
+    }
+
+    /**
+     * Get the right where exists or where not exists function
+     *
+     * @param $operator
+     * @return string
+     */
+    protected function getWhereExists($operator): string
+    {
+        // If field should not equal null the field should exist
+        if (in_array($operator, ['!=', '<>'], true)) {
+            return 'whereExists';
+        }
+
+        return 'whereNotExists';
     }
 }
