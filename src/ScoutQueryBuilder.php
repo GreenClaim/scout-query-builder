@@ -2,18 +2,17 @@
 
 namespace Yource\ScoutQueryBuilder;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use ScoutElastic\Builders\SearchBuilder;
-use Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest;
+use Illuminate\Support\Collection;
+use Yource\ScoutQueryBuilder\Builders\ExtendedSearchBuilder;
 use Yource\ScoutQueryBuilder\Concerns\AddsFieldsToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AddsIncludesToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AppendsAttributesToResults;
-use Yource\ScoutQueryBuilder\Concerns\SortsQuery;
 use Yource\ScoutQueryBuilder\Concerns\FiltersQuery;
-use Yource\ScoutQueryBuilder\Builders\ExtendedSearchBuilder;
+use Yource\ScoutQueryBuilder\Concerns\SortsQuery;
 
 class ScoutQueryBuilder extends ExtendedSearchBuilder
 {
@@ -26,11 +25,13 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
     /** @var \Yource\ScoutQueryBuilder\ScoutQueryBuilderRequest */
     protected $request;
 
-    public function __construct(Model $model, $query, ?Request $request = null)
+    public function __construct(Builder $builder, $query, ?Request $request = null)
     {
         $softDelete = config('scout.soft_delete', false);
 
-        parent::__construct($model, $query, null, $softDelete);
+        $this->initializeFromBuilder($builder);
+
+        parent::__construct($builder->getModel(), $query, null, $softDelete);
 
         $this->request = ScoutQueryBuilderRequest::fromRequest($request ?? request());
     }
@@ -127,8 +128,11 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
      * @param null $page
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null): LengthAwarePaginator
-    {
+    public function paginate(
+        $perPage = null,
+        $pageName = 'page',
+        $page = null
+    ): LengthAwarePaginator {
         $this->parseSorts();
 
         if (!$this->allowedFields instanceof Collection) {
@@ -150,7 +154,6 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
      */
     public function paginateRaw(
         $perPage = null,
-        $columns = ['*'],
         $pageName = 'page',
         $page = null
     ): LengthAwarePaginator {
@@ -173,10 +176,8 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
      * @param null $page
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function jsonPaginate(
-        int $maxResults = null,
-        int $defaultSize = null
-    ): LengthAwarePaginator {
+    public function jsonPaginate(): LengthAwarePaginator
+    {
         $this->parseSorts();
 
         $page = $this->request->page();
@@ -186,5 +187,25 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
         }
 
         return parent::paginate($page['size'], 'page', $page['number']);
+    }
+
+    /**
+     * Add the global scopes from the $builder to this query builder.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     */
+    protected function initializeFromBuilder(Builder $builder): void
+    {
+        $builder->macro('getProtected', function (Builder $builder, string $property) {
+            return $builder->{$property};
+        });
+
+        $scopes = $builder->getProtected('scopes');
+
+        foreach ($scopes as $scope) {
+            if ($scope instanceof ScoutScope) {
+                $scope->apply($this, $builder->getModel());
+            }
+        }
     }
 }
