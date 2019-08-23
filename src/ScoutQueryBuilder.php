@@ -200,7 +200,10 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
             return $builder->{$property};
         });
 
-        $scopes = $builder->getProtected('scopes');
+        $reflection = new \ReflectionClass($builder);
+        $property = $reflection->getProperty('scopes');
+        $property->setAccessible(true);
+        $scopes = $property->getValue($builder);
 
         foreach ($scopes as $scope) {
             if ($scope instanceof ScoutScope) {
