@@ -25,7 +25,7 @@ class ExtendedSearchBuilder extends SearchBuilder
 
         // If the value is null and the operator = or != we should use an exists where
         if (
-            ($value === null || $value === 'null')
+            ($value === null || $value === 'null' || $value === '')
             && in_array($operator, ['=', '!=', '<>'], true)
         ) {
             $whereExists = $this->getWhereExists($operator);
