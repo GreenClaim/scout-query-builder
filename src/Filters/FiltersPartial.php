@@ -8,26 +8,12 @@ class FiltersPartial extends FiltersExact
 {
     public function __invoke(Builder $query, $value, string $property): Builder
     {
-        if ($this->isRelationProperty($query, $property)) {
+        if ($this->isNestedProperty($query, $property)) {
             return $this->withRelationConstraint($query, $value, $property);
         }
 
-        $wrappedProperty = $query->getQuery()->getGrammar()->wrap($property);
+        $value = str_replace(' ', '|', strtolower($value));
 
-        $sql = "LOWER({$wrappedProperty}) LIKE ?";
-
-        if (is_array($value)) {
-            return $query->where(function (Builder $query) use ($value, $sql) {
-                foreach ($value as $partialValue) {
-                    $partialValue = mb_strtolower($partialValue, 'UTF8');
-
-                    $query->orWhereRaw($sql, ["%{$partialValue}%"]);
-                }
-            });
-        }
-
-        $value = mb_strtolower($value, 'UTF8');
-
-        return $query->whereRaw($sql, ["%{$value}%"]);
+        return $query->whereRegexp($property, ".*{$value}.*");
     }
 }

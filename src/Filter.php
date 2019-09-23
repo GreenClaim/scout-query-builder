@@ -57,10 +57,10 @@ class Filter
         return new static($property, FiltersWithOperators::class, $columnName);
     }
 
-//    public static function partial(string $property, $columnName = null): self
-//    {
-//        return new static($property, FiltersPartial::class, $columnName);
-//    }
+    public static function partial(string $property, $columnName = null): self
+    {
+        return new static($property, FiltersPartial::class, $columnName);
+    }
 
     public static function custom(string $property, $filterClass, $columnName = null): self
     {
