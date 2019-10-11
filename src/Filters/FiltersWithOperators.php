@@ -8,15 +8,15 @@ class FiltersWithOperators implements Filter
 {
     public function __invoke(Builder $query, $value, string $property): Builder
     {
-        $value = is_array($value) ? $value : [$value];
+        $values = is_array($value) ? $value : [$value];
         $operator = key($value);
 
         if (in_array($operator, ['in', 'nin'], true)) {
             $where = $this->getOperator($operator);
-            return $query->$where($property, $value);
+            return $query->$where($property, $values[$operator]);
         }
 
-        foreach ($value as $operator => $value) {
+        foreach ($values as $operator => $value) {
             $query->where($property, $this->getOperator($operator), $value);
         }
 
