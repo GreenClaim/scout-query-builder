@@ -9,7 +9,7 @@ class FiltersWithOperators implements Filter
     public function __invoke(Builder $query, $value, string $property): Builder
     {
         $values = is_array($value) ? $value : [$value];
-        $operator = key($value);
+        $operator = key($values);
 
         if (in_array($operator, ['in', 'nin'], true)) {
             $where = $this->getOperator($operator);
