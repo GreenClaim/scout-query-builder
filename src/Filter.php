@@ -2,6 +2,7 @@
 
 namespace Yource\ScoutQueryBuilder;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Builder;
 use Yource\ScoutQueryBuilder\Filters\Filter as CustomFilter;
@@ -108,7 +109,15 @@ class Filter
     private function resolveValueForFiltering($property)
     {
         if (is_array($property)) {
-            $remainingProperties = array_diff($property, $this->ignored->toArray());
+            if (is_array(Arr::first($property))) {
+                foreach ($property as $key => $values) {
+                    $property[$key] = array_diff($values, $this->ignored->toArray());
+                }
+
+                $remainingProperties = $property;
+            } else {
+                $remainingProperties = array_diff($property, $this->ignored->toArray());
+            }
 
             return ! empty($remainingProperties) ? $remainingProperties : null;
         }
