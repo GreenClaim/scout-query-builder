@@ -13,7 +13,7 @@ class FiltersWithOperators implements Filter
 
         if (in_array($operator, ['in', 'nin'], true)) {
             $where = $this->getOperator($operator);
-            return $query->$where($property, $value);
+            return $query->$where($property, array_values($value));
         }
 
         foreach ($value as $operator => $value) {
