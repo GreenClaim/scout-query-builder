@@ -3,6 +3,7 @@
 namespace Yource\ScoutQueryBuilder\Filters;
 
 use Laravel\Scout\Builder;
+use Illuminate\Support\Arr;
 
 class FiltersWithOperators implements Filter
 {
@@ -13,7 +14,7 @@ class FiltersWithOperators implements Filter
 
         if (in_array($operator, ['in', 'nin'], true)) {
             $where = $this->getOperator($operator);
-            return $query->$where($property, array_values($values));
+            return $query->$where($property, Arr::flatten($values));
         }
 
         foreach ($values as $operator => $value) {
