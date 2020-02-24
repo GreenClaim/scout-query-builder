@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Yource\ScoutQueryBuilder\Builders\ExtendedSearchBuilder;
+use Yource\ScoutQueryBuilder\Concerns\BuildsQueries;
 use Yource\ScoutQueryBuilder\Concerns\AddsFieldsToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AddsIncludesToQuery;
 use Yource\ScoutQueryBuilder\Concerns\AppendsAttributesToResults;
@@ -18,6 +19,7 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
 {
     use FiltersQuery,
         SortsQuery,
+        BuildsQueries,
         AddsIncludesToQuery,
         AddsFieldsToQuery,
         AppendsAttributesToResults;
@@ -210,5 +212,17 @@ class ScoutQueryBuilder extends ExtendedSearchBuilder
                 $scope->apply($this, $builder->getModel());
             }
         }
+    }
+
+    /**
+     * Set the limit and offset for a given page.
+     *
+     * @param  int  $page
+     * @param  int  $perPage
+     * @return \Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Builder
+     */
+    public function forPage($page, $perPage = 15)
+    {
+        return $this->from(($page - 1) * $perPage)->take($perPage);
     }
 }
