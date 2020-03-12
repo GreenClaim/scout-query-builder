@@ -18,9 +18,9 @@
     "require": {
         "php": "^7.1",
         "babenkoivan/scout-elasticsearch-driver": "^4.0",
-        "illuminate/database": "~5.6.34|~5.7.0|~5.8.0|^6.0",
-        "illuminate/http": "~5.6.34|~5.7.0|~5.8.0|^6.0",
-        "illuminate/support": "~5.6.34|~5.7.0|~5.8.0|^6.0"
+        "illuminate/database": ">=6.0",
+        "illuminate/http": ">=6.0",
+        "illuminate/support": ">=6.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0|^8.0",
