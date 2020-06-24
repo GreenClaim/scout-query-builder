@@ -203,4 +203,20 @@ class ExtendedSearchBuilder extends SearchBuilder
 
         return 'whereNotExists';
     }
+
+    /**
+     * Add a context to a suggetions query.
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html#context-suggester
+     *
+     * @param  string  $field
+     * @param  array|string|int  $value
+     * @return $this
+     */
+    public function context($field, $value)
+    {
+        $this->contexts[$field] = $value;
+
+        return $this;
+    }
 }
