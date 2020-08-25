@@ -160,6 +160,33 @@ class ExtendedSearchBuilder extends SearchBuilder
     }
 
     /**
+     * Add a where nested object doesnt have value condition.
+     *
+     * @todo ripoff Eloquent whereHas to support closures, I want to be able to use queries on the nested object
+     *
+     * @param string $path the nested object where the value should excist
+     * @param mixed $value
+     * @return $this
+     */
+    public function whereDoesntHave($path, $field, $value)
+    {
+        $this->wheres['must_not'][]['nested'] = [
+            'path' => $path,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        'match' => [
+                            $path . '.' . $field => $value,
+                        ]
+                    ],
+                ],
+            ],
+        ];
+
+        return $this;
+    }
+
+    /**
      * Add a where nested object has one or more value condition.
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
@@ -180,6 +207,33 @@ class ExtendedSearchBuilder extends SearchBuilder
                         'terms' => [
                             $path . '.' . $field => $value,
                         ]
+                    ],
+                ],
+            ],
+        ];
+
+        return $this;
+    }
+
+    /**
+     * Add a where nested object does not have one or more value condition.
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
+     *
+     * @param string $path the nested object where the value should excist
+     * @param mixed $value
+     * @return $this
+     */
+    public function whereDoesntHaveIn($path, $field, $value)
+    {
+        $this->wheres['must_not'][]['nested'] = [
+            'path' => $path,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        'terms' => [
+                            $path . '.' . $field => $value,
+                        ],
                     ],
                 ],
             ],

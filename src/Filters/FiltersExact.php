@@ -2,6 +2,7 @@
 
 namespace Yource\ScoutQueryBuilder\Filters;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Laravel\Scout\Builder;
 
@@ -48,15 +49,29 @@ class FiltersExact implements Filter
 
     protected function withRelationConstraint($query, $value, string $property): Builder
     {
+        $values = is_array($value) ? $value : [$value];
+        $operator = $this->getRelationOperator(key($values));
+        $values = Arr::flatten($values);
         $properties = explode('.', $property);
 
         $path = $properties[0];
         $field = $properties[1];
 
-        if (is_array($value)) {
-            return $query->whereHasIn($path, $field, $value);
+        if (is_array($values)) {
+            $operator = $operator.'In';
+            return $query->$operator($path, $field, $values);
         }
 
-        return $query->whereHas($path, $field, $value);
+        return $query->$operator($path, $field, $values);
+    }
+
+    protected function getRelationOperator($operator): string
+    {
+        $operators = [
+            'in'  => 'whereHas',
+            'nin' => 'whereDoesntHave',
+        ];
+
+        return $operators[$operator] ?? 'whereHas';
     }
 }

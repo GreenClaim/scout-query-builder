@@ -5,12 +5,16 @@ namespace Yource\ScoutQueryBuilder\Filters;
 use Laravel\Scout\Builder;
 use Illuminate\Support\Arr;
 
-class FiltersWithOperators implements Filter
+class FiltersWithOperators extends FiltersExact
 {
     public function __invoke(Builder $query, $value, string $property): Builder
     {
         $values = is_array($value) ? $value : [$value];
         $operator = key($values);
+
+        if ($this->isNestedProperty($query, $property)) {
+            return $this->withRelationConstraint($query, $value, $property);
+        }
 
         if (in_array($operator, ['in', 'nin'], true)) {
             $where = $this->getOperator($operator);
