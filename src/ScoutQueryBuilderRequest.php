@@ -20,7 +20,7 @@ class ScoutQueryBuilderRequest extends Request
         $includeParts = $this->query($parameter);
 
         if (! is_array($includeParts)) {
-            $includeParts = explode(',', strtolower($this->query($parameter)));
+            $includeParts = explode(',', $this->query($parameter));
         }
 
         return collect($includeParts)->filter();
@@ -33,7 +33,7 @@ class ScoutQueryBuilderRequest extends Request
         $appendParts = $this->query($appendParameter);
 
         if (! is_array($appendParts)) {
-            $appendParts = explode(',', strtolower($appendParts));
+            $appendParts = explode(',', $appendParts);
         }
 
         return collect($appendParts)->filter();
