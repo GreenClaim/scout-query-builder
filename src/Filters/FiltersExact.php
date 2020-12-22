@@ -52,7 +52,7 @@ class FiltersExact implements Filter
         $values = is_array($value) ? $value : [$value];
         $operator = $this->getRelationOperator(key($values));
         $values = Arr::flatten($values);
-        $properties = explode('.', $property);
+        $properties = explode('.', $property, 2);
 
         $path = $properties[0];
         $field = $properties[1];
