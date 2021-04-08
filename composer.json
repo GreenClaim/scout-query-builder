@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.1|^8.0",
         "babenkoivan/scout-elasticsearch-driver": "^4.0",
         "illuminate/database": ">=6.0",
         "illuminate/http": ">=6.0",
